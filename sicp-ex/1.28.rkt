@@ -1,0 +1,51 @@
+#lang racket
+
+(define (square x)
+  (* x x))
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (check n m)
+  (define r (remainder (square n) m))
+  (if (and (not (= n 1))
+           (not (= n (- m 1)))
+           (= r 1))
+      0
+      r))
+                
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (check (expmod base (/ exp 2) m) m))
+        (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
+(define (miller-rabin n)
+  (define (iter a)
+    (cond ((= a n) #t)
+           ((= (expmod a (- n 1) n) 1)
+            (iter (+ a 1)))
+          (else #f)))
+  (iter 1))
+
+(display "Primes")
+(newline)
+(miller-rabin 2)
+(miller-rabin 3)
+(miller-rabin 5)
+(miller-rabin 7)
+(miller-rabin 11)
+(miller-rabin 13)
+
+(newline)
+(display "Not Primes")
+(newline)
+(miller-rabin 561)
+(miller-rabin 1105)
+(miller-rabin 4531)
+(miller-rabin 1729)
+(miller-rabin 10)
+(miller-rabin 2465)
+(miller-rabin 2821)
+(miller-rabin 42)
+(miller-rabin 6601)
