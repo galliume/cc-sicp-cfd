@@ -1,0 +1,103 @@
+﻿{
+  "version": 8,
+  "include": [
+    "CMakeHiddenPresets.json"
+  ],
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "windows-debug",
+      "displayName": "Debug",
+      "description": "Windows Debug",
+      "inherits": [
+        "windows-common",
+        "DEBUG_BUILD_TYPE",
+        "DEBUG_CMAKE_C_FLAGS",
+        "DEBUG_CMAKE_CXX_FLAGS"
+      ]
+    },
+    {
+      "name": "windows-release",
+      "displayName": "Release",
+      "description": "Windows Release",
+      "inherits": [
+        "windows-common",
+        "RELEASE_BUILD_TYPE"
+      ]
+    },
+    {
+      "name": "windows-release-dbg",
+      "displayName": "Release with debug symbols",
+      "description": "Windows Release with debug symbols",
+      "inherits": [
+        "windows-common",
+        "RELEASE_DEBUG_BUILD_TYPE"
+      ]
+    },
+    {
+      "name": "linux-debug",
+      "displayName": "Debug",
+      "description": "Linux Debug",
+      "inherits": [
+        "linux-common",
+        "DEBUG_BUILD_TYPE",
+        "DEBUG_CMAKE_C_FLAGS",
+        "DEBUG_CMAKE_CXX_FLAGS"
+      ]
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Release",
+      "description": "Linux Release",
+      "inherits": [
+        "linux-common",
+        "RELEASE_BUILD_TYPE"
+      ]
+    },
+    {
+      "name": "linux-release-dbg",
+      "displayName": "Release with debug symbols",
+      "description": "Linux Release with debug symbols",
+      "inherits": [
+        "linux-common",
+        "RELEASE_DEBUG_BUILD_TYPE"
+      ]
+    }
+  ],
+   "buildPresets": [
+    {
+      "name": "windows-debug",
+      "displayName": "Debug",
+      "configurePreset": "windows-debug"
+    },
+    {
+      "name": "windows-release",
+      "displayName": "Release",
+      "configurePreset": "windows-release"
+    },
+    {
+      "name": "windows-release-dbg",
+      "displayName": "ReleaseWithDebSymbols",
+      "configurePreset": "windows-release-dbg"
+    },
+    {
+      "name": "linux-debug",
+      "displayName": "Debug",
+      "configurePreset": "linux-debug"
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Release",
+      "configurePreset": "linux-release"
+    },
+    {
+      "name": "linux-release-dbg",
+      "displayName": "ReleaseWithDebSymbols",
+      "configurePreset": "linux-release-dbg"
+    }
+  ]
+}

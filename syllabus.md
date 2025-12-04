@@ -9,7 +9,7 @@
 The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the same day.
 
 * **Day A (2 Hours):** **SICP (Scheme/Racket)**. Focus on abstraction, recursion, and metalinguistic theory.
-* **Day B (2 Hours):** **CFD (C++)**. Focus on numerics, memory management, and physical implementation.
+* **Day B (2 Hours):** **CFD (C++ / CUDA)**. Focus on numerics, memory management, and physical implementation.
 * **Day 7:** Rest or Catch-up.
 
 ---
@@ -52,22 +52,24 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 
 ---
 
-## Phase 3: The Synthesis (Months 7 – 9)
-**Theme:** *Metalinguistic Abstraction & The Navier-Stokes*
-**Goal:** The "Lid-Driven Cavity" (The "Hello World" of professional CFD).
+## Phase 3: The Synthesis & Acceleration (Months 7 – 9)
+**Theme:** *Concurrency, Metalinguistic Abstraction & The GPU*
+**Goal:** The "Lid-Driven Cavity" running on CUDA.
 
 | Week | Track | Topic / Reading | The "Project Task" (Code It) |
 | :--- | :--- | :--- | :--- |
-| **17-20** | **SICP** | **3.5: Streams.** (Delayed evaluation). | **Infinite Primes:** Write a stream that generates infinite prime numbers. *Goal: Apply "Lazy" thinking to boundary condition updates.* |
-| | **CFD** | **Ch 7-8: Navier-Stokes Equations.** | **SIMPLE Algorithm:** Implement the Semi-Implicit Method for Pressure Linked Equations. This couples Pressure and Velocity. |
+| **17-18** | **SICP** | **3.4: Concurrency.** (Serializer, Mutex). | **Bank Account Attack:** Implement the "Exchange" problem and create a deadlock. *Goal: Understand race conditions.* |
+| | **CFD** | **CUDA Basics.** (Memory & Kernels). | **Field Transfer:** Write a wrapper to `malloc` memory on GPU and transfer your `Field` data to the device. Write a kernel to initialize $T=0$. |
+| **19-20** | **SICP** | **3.5: Streams.** (Delayed evaluation). | **Infinite Primes:** Write a stream that generates infinite prime numbers. *Goal: Apply "Lazy" thinking to boundary condition updates.* |
+| | **CFD** | **Ch 7-8: Navier-Stokes Equations.** | **SIMPLE Algorithm (CPU):** Implement the Semi-Implicit Method for Pressure Linked Equations on CPU first. Validate results. |
 | **21-23** | **SICP** | **4.1: The Metacircular Evaluator.** | **The Interpreter:** Write `eval` and `apply`. *Goal: Deeply understand how an interpreter walks a syntax tree.* |
-| | **CFD** | **Advanced C++: Expression Templates.** | **Operator Overloading:** Overload C++ operators so you can write `Eqn = fvm::ddt(U) + fvm::div(phi,U)`. |
+| | **CFD** | **CUDA Solvers.** (Jacobi Iteration). | **GPU Linear Solver:** Replace your CPU Gauss-Seidel solver with a **Jacobi Solver** running on GPU (Red-Black ordering is optimal here). |
 
-### 🏆 Capstone Boss Fight: The Lid-Driven Cavity
-**Objective:** Solve the incompressible flow in a box where the top lid moves at 1 m/s.
+### 🏆 Capstone Boss Fight: The CUDA Lid-Driven Cavity
+**Objective:** Solve the incompressible flow in a box where the top lid moves at 1 m/s, accelerated by NVIDIA CUDA.
 **Deliverables:**
-1. **Code:** A C++ solver using the SIMPLE algorithm.
-2. **Architecture:** Clean separation of Mesh, Fields, and Discretization (SICP principles).
+1. **Hybrid Architecture:** A `Simulation` class that manages CPU logic (timestep loop) and GPU execution (flux calculation, linear solve).
+2. **Performance Benchmark:** Graph the "Seconds per Timestep" of your CPU solver vs. your GPU solver for grid sizes $32^2, 64^2, 128^2, 256^2$.
 3. **Visuals:** Export results to VTK and visualize the central vortex in **Paraview**.
 
 ---
@@ -75,4 +77,5 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 ## Resources
 * **SICP:** [Video Lectures (Brian Harvey)](https://www.youtube.com/playlist?list=PLhMnuBfGeCDNgVzLPx9H472TueD8u9CNC)
 * **CFD:** [Milovan Perić Video Series](https://www.youtube.com/watch?v=8a0j2DQiTVQ)
+* **CUDA:** [NVIDIA CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/)
 * **Language:** DrRacket (SICP) & Modern C++ (CFD)

@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "(lldb) Start Windows",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/cfd/build/windows-debug/CFD.exe",
+            "cwd": "${workspaceFolder}",
+            "relativePathBase": "${workspaceFolder}",
+            "console": "externalTerminal",
+            "args": [""]
+        },
+        {
+            "name": "(lldb) Start linux",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/cfd/build/linux-debug/CFD",
+            "cwd": "${workspaceFolder}",
+            "relativePathBase": "${workspaceFolder}",
+            "console": "externalTerminal",
+            "args": ["-E"]
+        }
+    ],
+    "inputs": [
+        {
+          "type": "pickString",
+          "id": "compiler",
+          "description": "Compiler/build to be used",
+          "options": [
+            "windows-debug",
+            "windows-release",
+            "windows-release-dbg",
+            "linux-debug",
+            "linux-release",
+            "linux-release-dbg",
+        ],
+          "default": "windows-debug"
+        },
+      ]
+}

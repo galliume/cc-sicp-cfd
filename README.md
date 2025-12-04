@@ -1,2 +1,14 @@
-# cc-sicp-cfd
-Crazy combination of SICP and CFD methods
+# Crazy combination of SICP and CFD methods
+i.e : cc-sicp-cfd
+
+### Project: High-Performance Computational Fluid Dynamics Engine
+
+*Designed and implemented a parallelized Navier-Stokes solver from first principles.*
+
+* **Architecture:** Applied functional programming paradigms (SICP) to decouple physics solvers from memory management, improving code modularity.
+
+* **Performance:** Optimized mesh data structures for cache locality, implementing custom linear solvers (TDMA, Gauss-Seidel).
+
+* **Theory:** Implemented algorithmic optimizations (Logarithmic recursion, Stream processing) derived from rigorous study of *Structure and Interpretation of Computer Programs*.
+
+<i>Sources: Computational Methods for Fluid Dynamics and Structure and Interpretation of Computer Programs.</i>
