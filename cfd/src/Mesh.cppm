@@ -1,5 +1,6 @@
 module;
 
+#include <cassert>
 #include <cstddef>
 #include <vector>
 
@@ -19,6 +20,8 @@ export namespace cfd
       : _n_cells(n)
       , _length(m)
       {
+        assert(_n_cells > 0);
+
         _dx = _length / static_cast<Meters>(_n_cells);
  
         _x_centers.resize(_n_cells);

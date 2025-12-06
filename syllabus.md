@@ -21,15 +21,16 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 | Week | Track | Topic / Reading | The "Project Task" (Code It) |
 | :--- | :--- | :--- | :--- |
 | **1-2** | **SICP** | **1.1: The Elements of Programming.** (Naming, Environment, Evaluation). | **Newton's Root Finder:** Write a square root finder in Scheme using Newton's Method. *Goal: Understand iterative convergence.* |
-| | **CFD** | **Ch 1: Basic Conservation Equations.** (Navier-Stokes overview). | **Field Initialization:** Write a C++ script that allocates a 1D array (std::vector) and initializes a temperature field $T(x) = \sin(x)$. |
+| | **CFD** | **F&P Ch 1.7 & 2.4:** Basic conservation & Grid generation. | **Field Initialization:** Write a C++ script that allocates a 1D array (std::vector) and initializes a temperature field $T(x) = \sin(x)$. |
 | **3-4** | **SICP** | **1.3: Higher-Order Procedures.** (Functions taking functions). | **Generic Summation:** Write a generic `sum` function that takes a `term` function (e.g., $term(x) = x^2$) and a `next` function. |
-| | **CFD** | **Ch 3: Finite Volume Method (Diffusion).** | **1D Diffusion Solver:** Write a C++ solver for $d^2T/dx^2 = 0$. Hardcode the grid. Use the **TDMA** (Tridiagonal Matrix Algorithm). |
+| | **CFD** | **F&P Ch 3.5 & 5.2.3:** Finite Difference & TDMA Solver. | **1D Diffusion Solver:** Write a C++ solver for $d^2T/dx^2 = 0$. Hardcode the grid. Use the **TDMA** (Tri-Diagonal Matrix Algorithm). |
 | **5-8** | **SICP** | **2.1 - 2.2: Data Abstraction.** (Constructors/Selectors). | **Rational Numbers:** Implement a `Rational` number system. Hide the internal representation (pairs) behind strict barriers. |
-| | **CFD** | **Ch 4: FVM (Convection-Diffusion).** | **Refactor to Classes:** Create a `Mesh` class and a `Cell` struct. The solver must loop over `mesh.cells()` instead of a raw integer `i`. |
+| | **CFD** | **F&P Ch 4.2 - 4.4:** Finite Volume (Convection-Diffusion). | **Refactor to Classes:** Create a `Mesh` class and a `Cell` struct. The solver must loop over `mesh.cells()` instead of a raw integer `i`. |
 
 ### 🛑 Boss Fight 1: The Generic 1D Solver
 **Objective:** Build a C++ solver for the 1D Convection-Diffusion equation.
 **Requirement:** You must be able to swap the differencing scheme (Upwind vs. Central Difference) at runtime by passing a `Scheme` strategy object (inspired by SICP 1.3).
+**Reading:** F&P Section 4.4 (Upwind/Central schemes).
 
 ---
 
@@ -40,15 +41,16 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 | Week | Track | Topic / Reading | The "Project Task" (Code It) |
 | :--- | :--- | :--- | :--- |
 | **9-11** | **SICP** | **2.4 - 2.5: Generic Operations.** (Tagging data, complex systems). | **Arithmetic Package:** Build a system that adds "Scheme Numbers" and "Rational Numbers" seamlessly using data tagging. |
-| | **CFD** | **Ch 5: Solution of Linear Equation Systems.** | **Linear Solver Class:** Implement **Gauss-Seidel** and **SOR** solvers in C++. Abstract them behind a `LinearSolver` base class. |
+| | **CFD** | **F&P Ch 5.3:** Iterative Solvers (Gauss-Seidel). | **Linear Solver Class:** Implement **Gauss-Seidel** and **SOR** solvers in C++. Abstract them behind a `LinearSolver` base class. |
 | **12-14** | **SICP** | **3.1: Assignment & State.** (The costs of `set!`). | **Monte Carlo Simulation:** Implement the Monte Carlo $\pi$ estimator using `rand` and internal state. *Goal: Understand the dangers of mutation.* |
-| | **CFD** | **Ch 6: Time Integration.** (Explicit vs Implicit). | **Unsteady Solver:** Implement an **Explicit Euler** loop (watch it become unstable). Then implement **Implicit Euler**. |
+| | **CFD** | **F&P Ch 6.1 - 6.3:** Time Integration. | **Unsteady Solver:** Implement an **Explicit Euler** loop (watch it become unstable). Then implement **Implicit Euler**. |
 | **15-16** | **SICP** | **3.3: Mutable Data.** (Queues/Tables). | **Queue Implementation:** Build a Queue from scratch using mutable cons cells (or Atoms/Vectors if using Clojure). |
-| | **CFD** | **Ch 7: Complex Geometries.** (Unstructured grids). | **2D Grid Support:** Update `Mesh` to support 2D. Use a flat 1D vector for storage ($idx = y \times width + x$) for cache efficiency. |
+| | **CFD** | **F&P Ch 8.3:** Complex Geometries (Indexing). | **2D Grid Support:** Update `Mesh` to support 2D. Use a flat 1D vector for storage ($idx = y \times width + x$) for cache efficiency. |
 
 ### 🛑 Boss Fight 2: The 2D Heat Equation
 **Objective:** A C++ solver for the unsteady 2D Heat Equation on a rectangular plate.
 **Requirement:** The code must use a `Field` class that abstracts the 2D indexing. The update loop should look like math: `T_new = T + dt * Laplacian(T)`.
+**Reading:** F&P Section 6.3 (Implicit Methods).
 
 ---
 
@@ -61,7 +63,7 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 | **17-18** | **SICP** | **3.4: Concurrency.** (Serializer, Mutex). | **Bank Account Attack:** Implement the "Exchange" problem and create a deadlock. *Goal: Understand race conditions.* |
 | | **CFD** | **CUDA Basics.** (Memory & Kernels). | **Field Transfer:** Write a wrapper to `malloc` memory on GPU and transfer your `Field` data to the device. Write a kernel to initialize $T=0$. |
 | **19-20** | **SICP** | **3.5: Streams.** (Delayed evaluation). | **Infinite Primes:** Write a stream that generates infinite prime numbers. *Goal: Apply "Lazy" thinking to boundary condition updates.* |
-| | **CFD** | **Ch 7-8: Navier-Stokes Equations.** | **SIMPLE Algorithm (CPU):** Implement the Semi-Implicit Method for Pressure Linked Equations on CPU first. Validate results. |
+| | **CFD** | **F&P Ch 7.2 - 7.3:** Navier-Stokes (SIMPLE). | **SIMPLE Algorithm (CPU):** Implement the Semi-Implicit Method for Pressure Linked Equations on CPU first. Validate results. |
 | **21-23** | **SICP** | **4.1: The Metacircular Evaluator.** | **The Interpreter:** Write `eval` and `apply`. *Goal: Deeply understand how an interpreter walks a syntax tree.* |
 | | **CFD** | **CUDA Solvers.** (Jacobi Iteration). | **GPU Linear Solver:** Replace your CPU Gauss-Seidel solver with a **Jacobi Solver** running on GPU (Red-Black ordering is optimal here). |
 
@@ -71,6 +73,7 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 1. **Hybrid Architecture:** A `Simulation` class that manages CPU logic (timestep loop) and GPU execution (flux calculation, linear solve).
 2. **Performance Benchmark:** Graph the "Seconds per Timestep" of your CPU solver vs. your GPU solver for grid sizes $32^2, 64^2, 128^2, 256^2$.
 3. **Visuals:** Export results to VTK and visualize the central vortex in **Paraview**.
+**Reading:** F&P Section 7.5 (Incompressible Flow Examples).
 
 ---
 

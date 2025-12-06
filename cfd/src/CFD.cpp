@@ -1,6 +1,7 @@
 #include <cmath>
 #include <format>
 #include <iostream>
+#include <numbers>
 
 import Mesh;
 import Field;
@@ -9,11 +10,9 @@ using namespace cfd;
 
 int main(int, char**)
 {
-  std::cout << std::format("{} {}", "hello", "cfd") << std::endl;
-
   std::cout << "Initializing Simulation...\n";
 
-  Index const N { 20 };
+  Index const N { 0 };
   Meters const L { 1.0 }; 
   Mesh grid(N, L);
 
@@ -22,7 +21,7 @@ int main(int, char**)
 
   for(Index i { 0 }; i < T.size(); i++) {
       Coordinate const x { grid.x(i) };
-      T[i] = std::sin(3.14159 * x);
+      T[i] = std::sin(std::numbers::pi * x);
   }
 
   T.to_string();
