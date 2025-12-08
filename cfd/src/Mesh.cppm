@@ -5,14 +5,14 @@ module;
 #include <vector>
 
 export module Mesh;
- 
+
 export namespace cfd
 {
   using Coordinate = double;
   using Index = std::size_t;
   using Meters = double;
   using Scalar = double;
- 
+
   class Mesh
   {
     public:
@@ -23,7 +23,7 @@ export namespace cfd
         assert(_n_cells > 0);
 
         _dx = _length / static_cast<Meters>(_n_cells);
- 
+
         _x_centers.resize(_n_cells);
         for (Index i { 0 }; i < _n_cells; ++i) {
           _x_centers[i] = _dx / 2.0 + static_cast<Meters>(i) * _dx;

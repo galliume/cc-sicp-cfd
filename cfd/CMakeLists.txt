@@ -35,6 +35,7 @@ PRIVATE
   ${PROJECT_SOURCE_DIR}/src)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/solver)
 
 set(DEBUG_OPTIONS
   -g

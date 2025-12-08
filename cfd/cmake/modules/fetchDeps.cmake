@@ -1,3 +1,11 @@
 set(FETCHCONTENT_QUIET OFF)
 
+set(FETCH_GIT_SHALLOW TRUE)
+set(FETCH_GIT_PROGRESS TRUE)
+set(FETCH_UPDATE_DISCONNECTED TRUE)
+
+set(KOKKOSMDSPAN_TAG stable)
+
 include(FetchContent)
+
+include(deps/KokkosMDSpan)
