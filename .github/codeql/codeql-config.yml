@@ -1,0 +1,7 @@
+name: CC-SICP-CFD CodeQL config
+
+languages: 
+  - cpp
+
+paths: 
+  - main/cfd/src/

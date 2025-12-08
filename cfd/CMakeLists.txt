@@ -6,13 +6,54 @@ cmake_minimum_required(VERSION 3.31.0)
 #set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
 
 project(CFD
-  VERSION 0.2.1
+  VERSION 0.0.1
   DESCRIPTION "CFD solver with SICP mindset"
   HOMEPAGE_URL "https://github.com/galliume/cc-sicp-cfd"
   LANGUAGES C CXX
   )
 
+set(DEBUG_OPTIONS
+  -g
+  -O0
+  -pthread
+  -Weverything
+  -Wno-c++20-compat
+  -Werror)
+
+set(RELEASE_OPTIONS
+  -O3
+  -pthread
+  -march=x86-64
+  -DNDEBUG
+  -Weverything
+  -Wno-c++20-compat)
+
+
+set(LINK_OPTIONS
+  -pthread)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  list(APPEND EXTRA_LIBS
+    Ws2_32 user32 gdi32 winspool shell32 ole32 oleaut32 uuid comdlg32 advapi32)
+endif()
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+list(APPEND EXTRA_LIBS Threads::Threads)
+
+set(CFD_LIB cfd_lib)
+set(CFD_TEST cfd_tests)
+
+add_subdirectory(src)
+
 add_executable(${PROJECT_NAME} src/CFD.cpp)
+
+include(CheckIPOSupported)
+check_ipo_supported(RESULT ipo_supported OUTPUT ipo_error)
+if(ipo_supported)
+  message(STATUS "ipo_supported")
+  set_target_properties(${PROJECT_NAME} PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
 
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
@@ -34,78 +75,10 @@ target_include_directories(${PROJECT_NAME}
 PRIVATE
   ${PROJECT_SOURCE_DIR}/src)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/src)
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/solver)
-
-set(DEBUG_OPTIONS
-  -g
-  -O0
-  -pthread
-  -Weverything
-  -fno-inline
-  -fno-inline-functions
-  -fno-omit-frame-pointer
-  -fno-strict-aliasing
-  -Wno-c++98-compat
-  -Wno-old-style-cast
-  -Wno-padded
-  -Wno-documentation
-  -Wno-documentation-unknown-command
-  -Wno-decls-in-multiple-modules
-  -Wno-unsafe-buffer-usage
-  -Wno-c++98-compat
-  -Wno-c++98-compat-pedantic
-  -Wno-covered-switch-default
-  -Wno-deprecated-declarations
-  -Wno-c++20-compat
-  -Werror)
-
-set(RELEASE_OPTIONS
-  -O3
-  -pthread
-  -march=x86-64
-  -DNDEBUG
-  -Weverything
-  -Wno-c++98-compat
-  -Wno-old-style-cast
-  -Wno-padded
-  -Wno-documentation
-  -Wno-documentation-unknown-command
-  -Wno-decls-in-multiple-modules
-  -Wno-unsafe-buffer-usage
-  -Wno-c++98-compat
-  -Wno-c++98-compat-pedantic
-  -Wno-covered-switch-default
-  -Wno-deprecated-declarations
-  -Wno-c++20-compat)
-
-include(CheckIPOSupported)
-check_ipo_supported(RESULT ipo_supported OUTPUT ipo_error)
-if(ipo_supported)
-  message(STATUS "ipo_supported")
-  set_target_properties(${PROJECT_NAME} PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif()
-
-set(LINK_OPTIONS
-  -pthread)
-
-target_compile_definitions(${PROJECT_NAME}
-  PRIVATE
-    VK_NO_PROTOTYPES)
-
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  # target_include_directories(${PROJECT_NAME}
-  #   SYSTEM PRIVATE
-  #     "G:/mingw64/x86_64-w64-mingw32/include")
-  #include_directories(SYSTEM "G:/mingw64/x86_64-w64-mingw32/include")
-
   target_compile_definitions(${PROJECT_NAME} PRIVATE
       _CRT_SECURE_NO_WARNINGS
       WIN32_LEAN_AND_MEAN)
-
-  LIST(APPEND DEBUG_OPTIONS -femulated-tls)
-  LIST(APPEND RELEASE_OPTIONS -femulated-tls)
-  LIST(APPEND LINK_OPTIONS -femulated-tls)
 endif()
 
 target_compile_features(${PROJECT_NAME}
@@ -125,23 +98,16 @@ target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:RELEASE>:${RELEASE_OPT
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:DEBUG>:PLP_DEBUG_BUILD>)
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  list(APPEND EXTRA_LIBS
-    Ws2_32 user32 gdi32 winspool shell32 ole32 oleaut32 uuid comdlg32 advapi32)
-endif()
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-list(APPEND EXTRA_LIBS Threads::Threads)
-
-set(PLP_LIB_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>/lib")
-set(PLP_BIN_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-
 message(STATUS "EXTRA_LIBS: ${EXTRA_LIBS}")
 target_link_libraries(${PROJECT_NAME} PRIVATE ${EXTRA_LIBS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CFD_LIB})
 
 message(STATUS "Fetching dependancies")
+
 include(fetchDeps)
+
+set(CC_LIB_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>/lib")
+set(CC_BIN_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>/bin")
 
 install(TARGETS ${PROJECT_NAME}
     EXPORT CFDTargets
@@ -155,6 +121,13 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
   COMMAND_EXPAND_LISTS
 )
+
+option(BUILD_TESTING "Build the tests" ON)
+
+if(BUILD_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
 
 ##################### Install ###########################
 
@@ -172,10 +145,10 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #   COMPONENT Development
 # )
 
-find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
-if(CLANG_TIDY_EXE)
-  set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-checks=-*,modernize-*,performance-*")
-endif()
+# find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+# if(CLANG_TIDY_EXE)
+#   set_target_properties(${PROJECT_NAME} PROPERTIES
+#     CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-checks=-*,modernize-*,performance-*")
+# endif()
 
 include(graphVizOptions)

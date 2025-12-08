@@ -1,0 +1,71 @@
+name: cc-sicp-cfd
+permissions:
+  contents: read
+  actions: read 
+  security-events: write
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        language: [cpp]
+        cmake_preset: [linux-release]
+        include:
+          - os: ubuntu-latest
+            cmake_preset: linux-release
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Install Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository universe || true
+          sudo apt-get update
+          sudo apt-get install -y build-essential extra-cmake-modules
+
+      - name: Checks
+        run: |
+          clang --version
+          gcc --version
+          cmake --version
+
+      - name: List Presets
+        working-directory: main/cfd
+        run: cmake --list-presets
+
+      - name: Configure preset
+        working-directory: main/cfd
+        run: cmake --preset ${{ matrix.cmake_preset }}
+
+      - name: Perform CodeQL init
+        uses: github/codeql-action/init@v3
+        with:
+          config-file: main/.github/codeql/codeql-config.yml
+          languages: ${{ matrix.language }}
+          build-mode: manual
+
+      - name: Build cc-sicp-cdf
+        working-directory: main/cfd
+        run: cmake --build --preset ${{ matrix.cmake_preset }} -- -j8
+
+      - name: Run tests
+        working-directory: main/cfd
+        run: ctest --preset ${{ matrix.cmake_preset }} --output-on-failure
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"

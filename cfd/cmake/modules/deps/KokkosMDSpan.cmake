@@ -14,7 +14,14 @@ if(TARGET mdspan)
   target_compile_options(mdspan INTERFACE
     -Wno-missing-noreturn
     -Wno-documentation
-    -Wno-documentation-unknown-command)
+    -Wno-documentation-unknown-command
+    -Wno-pre-c++14-compat
+    -Wno-c++98-compat
+    -Wno-c++98-compat-pedantic
+    -Wno-decls-in-multiple-modules
+    -Wno-unsafe-buffer-usage-in-libc-call
+    -Wno-old-style-cast
+    -Wno-unsafe-buffer-usage)
 endif()
 
 target_link_libraries(${PROJECT_NAME}

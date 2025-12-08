@@ -1,6 +1,10 @@
 # Crazy combination of SICP and CFD methods
 i.e : cc-sicp-cfd
 
+| **CI Service** | Build Status |
+|:---------------|-------------:|
+| GitHub Actions | [![cc-sicp-cfd](https://github.com/galliume/cc-sicp-cfd/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/galliume/cc-sicp-cfd/actions/workflows/CI.yml)
+
 ### Project: High-Performance Computational Fluid Dynamics Engine
 
 *Designed and implemented a parallelized Navier-Stokes solver from first principles.*
