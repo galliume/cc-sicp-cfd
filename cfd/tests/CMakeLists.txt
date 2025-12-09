@@ -15,16 +15,5 @@ target_link_libraries(${CFD_TEST} PRIVATE
   ${EXTRA_LIBS}
 )
 
-target_link_options(${CFD_TEST} PRIVATE
-  $<$<CONFIG:DEBUG>:${LINK_OPTIONS}>
-  $<$<CONFIG:RELEASE>:${LINK_OPTIONS}>
-)
-
-target_compile_options(${CFD_TEST} PRIVATE
-  $<$<CONFIG:DEBUG>:${DEBUG_OPTIONS}>
-  $<$<CONFIG:RELEASE>:${RELEASE_OPTIONS}>
-  -Wno-global-constructors
-)
-
 include(GoogleTest)
 gtest_discover_tests(${CFD_TEST})

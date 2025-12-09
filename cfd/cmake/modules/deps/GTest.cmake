@@ -9,4 +9,9 @@ FetchContent_Declare(
   UPDATE_DISCONNECTED ${FETCH_UPDATE_DISCONNECTED}
 )
 
+if(TARGET GTest::gtest_main)
+  target_compile_options(GTest::gtest_main INTERFACE
+    -Wno-character-conversion)
+endif()
+
 FetchContent_MakeAvailable(fetch_googletest)

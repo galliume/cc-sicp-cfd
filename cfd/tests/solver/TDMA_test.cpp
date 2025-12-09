@@ -26,7 +26,9 @@ TEST(TDMATest, Solves4x4SystemCorrectly) {
   Physics::apply_boundary_conditions(A);
 
   std::vector<double> rhs{ 0.0, 0.0, 0.0, 100.0 };
-  auto solution { Solver::solve_tdma(A, rhs) };
+  
+  auto A_copy_for_solve = matrix_data;
+  auto solution { Solver::solve_tdma(Kokkos::mdspan(A_copy_for_solve.data(), N, 3), rhs) };
 
   EXPECT_EQ(solution[0], 0.0);
   EXPECT_EQ(solution[N-1], 100.0);
@@ -34,7 +36,8 @@ TEST(TDMATest, Solves4x4SystemCorrectly) {
   std::vector<double> expected_solution{ 0.0, 33.333333, 66.666667, 100.0 };
   ExpectVectorsNear(solution, expected_solution, 1e-6);
 
-  auto solutionBis { Solver::solve_tdma(A, rhs) };
+  auto A_copy_for_solve2 = matrix_data;
+  auto solutionBis { Solver::solve_tdma(Kokkos::mdspan(A_copy_for_solve2.data(), N, 3), rhs) };
   ExpectVectorsNear(solutionBis, expected_solution, 1e-6);
 }
 
@@ -50,7 +53,8 @@ TEST(TDMATest, SolvesLargeSystemLinearGradientCorrectly) {
   rhs[0] = 0.0;
   rhs[N - 1] = 100.0;
 
-  auto solution { Solver::solve_tdma(A, rhs) };
+  auto A_copy_for_solve = matrix_data;
+  auto solution { Solver::solve_tdma(Kokkos::mdspan(A_copy_for_solve.data(), N, 3), rhs) };
 
   EXPECT_NEAR(solution[0], 0.0, 1e-9);
   EXPECT_NEAR(solution[N - 1], 100.0, 1e-9);
@@ -58,4 +62,3 @@ TEST(TDMATest, SolvesLargeSystemLinearGradientCorrectly) {
     EXPECT_NEAR(solution[i], 100.0 * static_cast<double>(i) / (N - 1), 1e-6);
   }
 }
-

@@ -10,7 +10,7 @@ target_sources(${CFD_LIB}
         Mesh.cppm
         Physics.cppm
   PRIVATE
-    )
+    Mesh.cpp)
 
 add_subdirectory(solver)
 

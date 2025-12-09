@@ -12,25 +12,6 @@ project(CFD
   LANGUAGES C CXX
   )
 
-set(DEBUG_OPTIONS
-  -g
-  -O0
-  -pthread
-  -Weverything
-  -Wno-c++20-compat
-  -Werror)
-
-set(RELEASE_OPTIONS
-  -O3
-  -pthread
-  -march=x86-64
-  -DNDEBUG
-  -Weverything
-  -Wno-c++20-compat)
-
-
-set(LINK_OPTIONS
-  -pthread)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   list(APPEND EXTRA_LIBS
@@ -88,11 +69,10 @@ target_compile_features(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR})
 
-target_link_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:DEBUG>:${LINK_OPTIONS}>)
-target_link_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:RELEASE>:${LINK_OPTIONS}>)
-
-target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:DEBUG>:${DEBUG_OPTIONS}>)
-target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:RELEASE>:${RELEASE_OPTIONS}>)
+target_compile_options(${PROJECT_NAME} PRIVATE
+  $<$<CONFIG:DEBUG>:-g;-O0;-Werror>
+  $<$<CONFIG:RELEASE>:-O3;-DNDEBUG>
+  -Weverything)
 
 # target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-fsanitize=address,undefined>)
 # target_link_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-fsanitize=address,undefined>)

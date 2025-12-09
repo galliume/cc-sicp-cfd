@@ -26,22 +26,22 @@ int main(int, char**)
   Field T("Temperature", mesh, 0.0);
 
   //N rows * 3 columns (left / center / right diagonals instead of full matrices)
-  std::vector<double> matrix_data(N * 3, 0.0);
-  auto A { Kokkos::mdspan(matrix_data.data(), N, 3) };
+  std::vector<double> matrix_data(mesh.n_cells() * 3, 0.0);
+  auto A { Kokkos::mdspan(matrix_data.data(), mesh.n_cells(), 3) };
 
   Physics::apply_diffusion_operator(A);
   Physics::apply_boundary_conditions(A);
 
-  std::vector<double> b(N, 0.0);
+  std::vector<double> b(mesh.n_cells(), 0.0);
   b[0] = T_left;
-  b[N - 1] = T_right;
+  b[mesh.n_cells() - 1] = T_right;
 
   std::cout << "Solving the linear system...\n";
   auto solution { Solver::solve_tdma(A, b) };
 
-  for(Index i { 0 }; i < N; ++i) {
-    T[i] = solution[i];
-    std::cout << std::format("T[{}] = {}\n", i, T[i]);
+  for(auto const cell : mesh) {
+    T[cell.index()] = solution[cell.index()];
+    std::cout << std::format("T(x={:.3f}) = {:.2f}\n", cell.x(), T[cell.index()]);
   }
 
   T.to_csv("./final_state.csv");
