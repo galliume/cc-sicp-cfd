@@ -43,10 +43,11 @@ list(APPEND EXTRA_LIBS Threads::Threads)
 
 set(CFD_LIB cfd_lib)
 set(CFD_TEST cfd_tests)
-
-add_subdirectory(src)
+set(CFD_BENCHMARK cfd_benchmark)
 
 add_executable(${PROJECT_NAME} src/CFD.cpp)
+
+add_subdirectory(src)
 
 include(CheckIPOSupported)
 check_ipo_supported(RESULT ipo_supported OUTPUT ipo_error)
@@ -127,6 +128,7 @@ option(BUILD_TESTING "Build the tests" ON)
 if(BUILD_TESTING)
   enable_testing()
   add_subdirectory(tests)
+  add_subdirectory(benchmarks)
 endif()
 
 ##################### Install ###########################

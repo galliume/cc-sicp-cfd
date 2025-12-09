@@ -65,6 +65,10 @@ jobs:
         working-directory: main/cfd
         run: ctest --preset ${{ matrix.cmake_preset }} --output-on-failure
 
+      - name: Run benchmarks
+        working-directory: main/cfd/build/${{ matrix.cmake_preset }}
+        run: ./benchmarks/cfd_benchmark
+
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v3
         with:

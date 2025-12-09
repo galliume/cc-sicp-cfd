@@ -38,10 +38,8 @@ TEST(TDMATest, Solves4x4SystemCorrectly) {
   ExpectVectorsNear(solutionBis, expected_solution, 1e-6);
 }
 
-TEST(TDMATest, SolvesLargeSystemLinearGradient) {
-  auto start = std::chrono::high_resolution_clock::now();
-
-  constexpr size_t N { 10000000 };
+TEST(TDMATest, SolvesLargeSystemLinearGradientCorrectly) {
+  constexpr size_t N { 100000 };
   std::vector<double> matrix_data(N * 3, 0.0);
   auto A { Kokkos::mdspan(matrix_data.data(), N, 3) };
 
@@ -54,8 +52,10 @@ TEST(TDMATest, SolvesLargeSystemLinearGradient) {
 
   auto solution { Solver::solve_tdma(A, rhs) };
 
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-  EXPECT_LT(duration, 500) << "TDMA took " << duration << "ms (expected < 500ms)";
+  EXPECT_NEAR(solution[0], 0.0, 1e-9);
+  EXPECT_NEAR(solution[N - 1], 100.0, 1e-9);
+  for (size_t i = 1; i < N - 1; ++i) {
+    EXPECT_NEAR(solution[i], 100.0 * static_cast<double>(i) / (N - 1), 1e-6);
+  }
 }
+
