@@ -7,9 +7,10 @@ module;
 #include <string>
 #include <vector>
 
-export module Field;
-
+import Defines;
 import Mesh;
+
+export module Field;
 
 export namespace cfd
 {

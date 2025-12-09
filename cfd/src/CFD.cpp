@@ -5,10 +5,11 @@
 //#include <mdspan>
 #include <mdspan/mdspan.hpp>
 
-import Mesh;
+import Defines;
 import Field;
-import TDMA;
+import Mesh;
 import Physics;
+import TDMA;
 
 using namespace cfd;
 
@@ -24,8 +25,9 @@ int main(int, char**)
   Mesh mesh(N, L);
   Field T("Temperature", mesh, 0.0);
 
-  std::vector<double> matrix_data(N * N, 0.0);
-  auto A { Kokkos::mdspan(matrix_data.data(), N, N) };
+  //N rows * 3 columns (left / center / right diagonals instead of full matrices)
+  std::vector<double> matrix_data(N * 3, 0.0);
+  auto A { Kokkos::mdspan(matrix_data.data(), N, 3) };
 
   Physics::apply_diffusion_operator(A);
   Physics::apply_boundary_conditions(A);

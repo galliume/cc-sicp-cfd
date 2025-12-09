@@ -4,15 +4,12 @@ module;
 #include <cstddef>
 #include <vector>
 
+import Defines;
+
 export module Mesh;
 
 export namespace cfd
 {
-  using Coordinate = double;
-  using Index = std::size_t;
-  using Meters = double;
-  using Scalar = double;
-
   class Mesh
   {
     public:

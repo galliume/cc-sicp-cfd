@@ -82,3 +82,5 @@ The "A/B Split" is designed to manage cognitive load. Do not mix contexts on the
 * **CFD:** [Milovan Perić Video Series](https://www.youtube.com/watch?v=8a0j2DQiTVQ)
 * **CUDA:** [NVIDIA CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/)
 * **Language:** DrRacket (SICP) & Modern C++ (CFD)
+
+Started : 02/12/2025

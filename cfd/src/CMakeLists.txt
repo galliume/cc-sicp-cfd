@@ -5,6 +5,7 @@ target_sources(${CFD_LIB}
     FILE_SET cxx_modules TYPE CXX_MODULES
       BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
       FILES
+        Defines.cppm
         Field.cppm
         Mesh.cppm
         Physics.cppm
