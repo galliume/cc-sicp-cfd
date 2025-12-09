@@ -58,4 +58,3 @@ TEST(TDMATest, SolvesLargeSystemLinearGradientCorrectly) {
     EXPECT_NEAR(solution[i], 100.0 * static_cast<double>(i) / (N - 1), 1e-6);
   }
 }
-

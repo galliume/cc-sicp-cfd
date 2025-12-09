@@ -4,7 +4,7 @@ module;
 #include <concepts>
 #include <vector>
 
-// #inclue <mdspan>
+// #include <mdspan>
 #include <mdspan/mdspan.hpp>
 
 import Defines;
@@ -18,7 +18,7 @@ export namespace Solver
   /**
    * https://www.cfd-online.com/Wiki/TriCFD_DIAGonal_matrix_algorithm_-_TDMA_(Thomas_algorithm)
    */
-  template <std::floating_point T>
+  template <std::floating_point T> [[nodiscard]]
   std::vector<T> solve_tdma(
     Kokkos::mdspan<T, Kokkos::dextents<size_t, 2>> const grid,
     std::vector<T> const & rhs)
