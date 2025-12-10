@@ -1,16 +1,10 @@
-module;
 
-#include <cstddef>
-#include <iostream>
-#include <format>
-#include <fstream>
-#include <string>
-#include <vector>
+export module Field;
 
 import Defines;
 import Mesh;
 
-export module Field;
+import std;
 
 export namespace cfd
 {

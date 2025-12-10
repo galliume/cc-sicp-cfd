@@ -1,6 +1,6 @@
 message(NOTICE "Fetching google/benchmark from https://github.com/google/benchmark ...")
 
-set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Disable benchmark's own tests")
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
   fetch_benchmark

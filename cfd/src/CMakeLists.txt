@@ -15,10 +15,9 @@ target_sources(${CFD_LIB}
 add_subdirectory(solver)
 
 target_link_libraries(${CFD_LIB} PRIVATE ${EXTRA_LIBS})
-target_link_libraries(${CFD_LIB} PUBLIC mdspan)
 
-target_link_options(${CFD_LIB} PRIVATE $<$<CONFIG:DEBUG>:${LINK_OPTIONS}>)
-target_link_options(${CFD_LIB} PRIVATE $<$<CONFIG:RELEASE>:${LINK_OPTIONS}>)
-
-target_compile_options(${CFD_LIB} PRIVATE $<$<CONFIG:DEBUG>:${DEBUG_OPTIONS}>)
-target_compile_options(${CFD_LIB} PRIVATE $<$<CONFIG:RELEASE>:${RELEASE_OPTIONS}>)
+target_compile_options(${CFD_LIB} PRIVATE
+  $<$<CONFIG:DEBUG>:-g;-O0;-Werror>
+  $<$<CONFIG:RELEASE>:-O3;-DNDEBUG>
+  -Wno-c++98-compat
+  -Weverything)

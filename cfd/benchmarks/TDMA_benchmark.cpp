@@ -1,10 +1,9 @@
 #include <benchmark/benchmark.h>
-#include <vector>
-
-#include <mdspan/mdspan.hpp>
 
 import TDMA;
 import Physics;
+
+import std;
 
 static void BM_TDMASolver(benchmark::State& state) {
 
@@ -18,7 +17,7 @@ static void BM_TDMASolver(benchmark::State& state) {
     state.PauseTiming();
 
     std::vector<double> matrix_data(N * 3, 0.0);
-    auto A { Kokkos::mdspan(matrix_data.data(), N, 3) };
+    auto A { std::mdspan(matrix_data.data(), N, 3) };
     Physics::apply_diffusion_operator(A);
     Physics::apply_boundary_conditions(A);
     state.ResumeTiming();

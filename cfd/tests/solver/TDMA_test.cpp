@@ -1,12 +1,8 @@
-#include <cmath>
-#include <chrono>
 #include <gtest/gtest.h>
-#include <vector>
-
-#include <mdspan/mdspan.hpp>
 
 import TDMA;
 import Physics;
+import std;
 
 namespace {
   void ExpectVectorsNear(const std::vector<double>& a, const std::vector<double>& b, double tolerance) {
@@ -20,15 +16,15 @@ namespace {
 TEST(TDMATest, Solves4x4SystemCorrectly) {
   constexpr size_t N { 4 };
   std::vector<double> matrix_data(N * 3, 0.0);
-  auto A { Kokkos::mdspan(matrix_data.data(), N, 3) };
+  auto A { std::mdspan(matrix_data.data(), N, 3) };
 
   Physics::apply_diffusion_operator(A);
   Physics::apply_boundary_conditions(A);
 
   std::vector<double> rhs{ 0.0, 0.0, 0.0, 100.0 };
-  
+
   auto A_copy_for_solve = matrix_data;
-  auto solution { Solver::solve_tdma(Kokkos::mdspan(A_copy_for_solve.data(), N, 3), rhs) };
+  auto solution { Solver::solve_tdma(std::mdspan(A_copy_for_solve.data(), N, 3), rhs) };
 
   EXPECT_EQ(solution[0], 0.0);
   EXPECT_EQ(solution[N-1], 100.0);
@@ -37,14 +33,14 @@ TEST(TDMATest, Solves4x4SystemCorrectly) {
   ExpectVectorsNear(solution, expected_solution, 1e-6);
 
   auto A_copy_for_solve2 = matrix_data;
-  auto solutionBis { Solver::solve_tdma(Kokkos::mdspan(A_copy_for_solve2.data(), N, 3), rhs) };
+  auto solutionBis { Solver::solve_tdma(std::mdspan(A_copy_for_solve2.data(), N, 3), rhs) };
   ExpectVectorsNear(solutionBis, expected_solution, 1e-6);
 }
 
 TEST(TDMATest, SolvesLargeSystemLinearGradientCorrectly) {
   constexpr size_t N { 100000 };
   std::vector<double> matrix_data(N * 3, 0.0);
-  auto A { Kokkos::mdspan(matrix_data.data(), N, 3) };
+  auto A { std::mdspan(matrix_data.data(), N, 3) };
 
   Physics::apply_diffusion_operator(A);
   Physics::apply_boundary_conditions(A);
@@ -54,7 +50,7 @@ TEST(TDMATest, SolvesLargeSystemLinearGradientCorrectly) {
   rhs[N - 1] = 100.0;
 
   auto A_copy_for_solve = matrix_data;
-  auto solution { Solver::solve_tdma(Kokkos::mdspan(A_copy_for_solve.data(), N, 3), rhs) };
+  auto solution { Solver::solve_tdma(std::mdspan(A_copy_for_solve.data(), N, 3), rhs) };
 
   EXPECT_NEAR(solution[0], 0.0, 1e-9);
   EXPECT_NEAR(solution[N - 1], 100.0, 1e-9);

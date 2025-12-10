@@ -1,7 +1,7 @@
 name: cc-sicp-cfd
 permissions:
   contents: read
-  actions: read 
+  actions: read
   security-events: write
 
 on:
@@ -36,11 +36,25 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential extra-cmake-modules
 
+      - name: Install Clang 20
+        if: runner.os == 'Linux'
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 20 all
+          sudo apt-get install -y libc++-20-dev libc++abi-20-dev
+
+      - name: Set Compiler Environment
+        run: |
+          echo "CC=clang-20" >> $GITHUB_ENV
+          echo "CXX=clang++-20" >> $GITHUB_ENV
+
       - name: Checks
         run: |
           clang --version
           gcc --version
           cmake --version
+          $CXX --version
 
       - name: List Presets
         working-directory: main/cfd

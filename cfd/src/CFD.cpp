@@ -1,9 +1,4 @@
-#include <format>
-#include <iostream>
-#include <vector>
-
-//#include <mdspan>
-#include <mdspan/mdspan.hpp>
+import std;
 
 import Defines;
 import Field;
@@ -15,8 +10,6 @@ using namespace cfd;
 
 int main(int, char**)
 {
-  std::cout << "Initializing Simulation...\n";
-
   Index const N { 40 };
   Meters const L { 1.0 };
   Scalar const T_left { 0.0 };
@@ -27,7 +20,7 @@ int main(int, char**)
 
   //N rows * 3 columns (left / center / right diagonals instead of full matrices)
   std::vector<double> matrix_data(mesh.n_cells() * 3, 0.0);
-  auto A { Kokkos::mdspan(matrix_data.data(), mesh.n_cells(), 3) };
+  auto A { std::mdspan(matrix_data.data(), mesh.n_cells(), 3) };
 
   Physics::apply_diffusion_operator(A);
   Physics::apply_boundary_conditions(A);

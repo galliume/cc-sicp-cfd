@@ -6,7 +6,6 @@ add_executable(${CFD_TEST}
 
 target_include_directories(${CFD_TEST} SYSTEM PRIVATE
   $<TARGET_PROPERTY:GTest::gtest_main,INTERFACE_INCLUDE_DIRECTORIES>
-  $<TARGET_PROPERTY:mdspan,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
 target_link_libraries(${CFD_TEST} PRIVATE
