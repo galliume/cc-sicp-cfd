@@ -15,4 +15,4 @@ i.e : cc-sicp-cfd
 
 * **Theory:** Implemented algorithmic optimizations (Logarithmic recursion, Stream processing) derived from rigorous study of *Structure and Interpretation of Computer Programs*.
 
-<i>Sources: Computational Methods for Fluid Dynamics and Structure and Interpretation of Computer Programs.</i>
+<i>Sources: Computational Methods for Fluid Dynamics, Structure and Interpretation of Computer Programs and Wolf Dynamics website. </i>

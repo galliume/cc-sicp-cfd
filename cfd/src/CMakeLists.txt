@@ -5,8 +5,10 @@ target_sources(${CFD_LIB}
     FILE_SET cxx_modules TYPE CXX_MODULES
       BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
       FILES
+        BoundaryConditions.cppm
         Defines.cppm
         Field.cppm
+        Fluid.cppm
         Mesh.cppm
         Physics.cppm
   PRIVATE

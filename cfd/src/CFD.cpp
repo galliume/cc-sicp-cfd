@@ -1,19 +1,22 @@
 import std;
 
+import BoundaryConditions;
 import Defines;
 import Field;
+import Fluid;
 import Mesh;
 import Physics;
+import Schemes;
 import TDMA;
 
 using namespace cfd;
 
 int main(int, char**)
 {
-  Index const N { 40 };
-  Meters const L { 1.0 };
-  Scalar const T_left { 0.0 };
-  Scalar const T_right { 100.0 };
+  constexpr Index const N { 100 };
+  constexpr Meters const L { 1.0 };
+  constexpr Scalar const T_left { 100.0 };
+  //constexpr Scalar const G_right { 0.0 };
 
   Mesh mesh(N, L);
   Field T("Temperature", mesh, 0.0);
@@ -22,12 +25,28 @@ int main(int, char**)
   std::vector<double> matrix_data(mesh.n_cells() * 3, 0.0);
   auto A { std::mdspan(matrix_data.data(), mesh.n_cells(), 3) };
 
-  Physics::apply_diffusion_operator(A);
-  Physics::apply_boundary_conditions(A);
+  Schemes::Types const scheme { Schemes::CDS() };
+  Field const velocity("Velocity", mesh, 0.1);
+  Fluid::Properties const air_props(1.204, 0.025);
+
+  Physics::apply_diffusion_operator(A, mesh, velocity, air_props, scheme);
+
+  BC::Types dirichletBCL { BC::Dirichlet(T_left) };
+  //BC::Types neumannBC { BC::Neumann(G_right) };
+  BC::Types dirichletBCR { BC::Dirichlet(0.0) };
+
+  Physics::apply_boundary_conditions(A, dirichletBCL, dirichletBCR);
 
   std::vector<double> b(mesh.n_cells(), 0.0);
-  b[0] = T_left;
-  b[mesh.n_cells() - 1] = T_right;
+  
+  std::visit([&](auto&& bc) {
+    b[0] = bc.value;
+  }, dirichletBCL);
+
+  std::visit([&](auto&& bc) {
+    b[mesh.n_cells() - 1] = bc.value;
+  }, dirichletBCR);
+
 
   std::cout << "Solving the linear system...\n";
   auto solution { Solver::solve_tdma(A, b) };
