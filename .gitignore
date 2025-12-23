@@ -43,3 +43,5 @@
 *.bak
 cfd/build
 *.csv
+
+cfd_jai/jai

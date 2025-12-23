@@ -13,7 +13,7 @@ using namespace cfd;
 
 int main(int, char**)
 {
-  constexpr Index const N { 100 };
+  constexpr Index const N { 10000 };
   constexpr Meters const L { 1.0 };
   constexpr Scalar const T_left { 100.0 };
   //constexpr Scalar const G_right { 0.0 };
@@ -38,7 +38,7 @@ int main(int, char**)
   Physics::apply_boundary_conditions(A, dirichletBCL, dirichletBCR);
 
   std::vector<double> b(mesh.n_cells(), 0.0);
-  
+
   std::visit([&](auto&& bc) {
     b[0] = bc.value;
   }, dirichletBCL);
@@ -47,7 +47,9 @@ int main(int, char**)
     b[mesh.n_cells() - 1] = bc.value;
   }, dirichletBCR);
 
-
+  for (std::size_t i{0}; i < A.extent(0); ++i) {
+    std::cout << std::format("{:.2e} {:.2e} {:.2e}\n", A[i, 0], A[i, 1], A[i, 2]);
+  }
   std::cout << "Solving the linear system...\n";
   auto solution { Solver::solve_tdma(A, b) };
 

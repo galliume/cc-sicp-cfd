@@ -39,18 +39,18 @@ export namespace Physics
            && "Grid too small for diffusion (min 3 points needed)");
 
     std::size_t const N { grid.extent(0) };
-    
+
     std::visit([&](auto&& s) {
       for(std::size_t i { 1 }; i < N - 1; ++i) {
         double const u { velocity[i] };
         double const F { fluid_props.rho * u };
         double const D { fluid_props.gamma / mesh.dx() };
 
-          auto const result { s(F, D) };
+        auto const result { s(F, D) };
 
-          grid[i, CFD_LOWER] = T(result[CFD_LOWER]);
-          grid[i, CFD_DIAG] =  T(result[CFD_DIAG]);
-          grid[i, CFD_UPPER] = T(result[CFD_UPPER]);
+        grid[i, CFD_LOWER] = T(result[CFD_LOWER]);
+        grid[i, CFD_DIAG] =  T(result[CFD_DIAG]);
+        grid[i, CFD_UPPER] = T(result[CFD_UPPER]);
       }
     }, scheme);
   }
@@ -77,7 +77,7 @@ export namespace Physics
             grid[0, CFD_UPPER] = 0.0;
         } else if constexpr (std::is_same_v<T_bc, BC::Neumann>) {
             grid[0, CFD_DIAG] = 1.0;
-            grid[0, CFD_UPPER] = -1.0; 
+            grid[0, CFD_UPPER] = -1.0;
         }
     }, left_boundary_condition);
 

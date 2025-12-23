@@ -20,7 +20,7 @@ export namespace Schemes
 
       Scalar a_W = D + std::max(F, 0.0);
       Scalar a_E = D + std::max(-F, 0.0);
-      Scalar a_P = a_W + a_E; 
+      Scalar a_P = a_W + a_E;
 
       result[CFD_LOWER] = -a_W;
       result[CFD_DIAG]  =  a_P;

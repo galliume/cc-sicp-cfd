@@ -7,7 +7,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "4.0")
     "d0edc3af-4c50-42ea-a356-e2862fe7a444")
 else()
   set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD
-    "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
+    "d0edc3af-4c50-42ea-a356-e2862fe7a444")
 endif()
 
 set(CMAKE_CXX_MODULE_STD 1)
