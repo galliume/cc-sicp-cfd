@@ -2,9 +2,9 @@
 #import "Math";
 
 solve_tdma :: (
-    grids : [] float,
-    rhs : [] float
-) -> [] float
+    grids : [] float64,
+    rhs : [] float64
+) -> [] float64
 {
     solution := rhs;
     N := rhs.count;

@@ -1,8 +1,8 @@
 Mesh :: struct {
     n_cells : u64;
-    length : float;
-    dx : float;
-    x_centers : [..] float;
+    length : float64;
+    dx : float64;
+    x_centers : [] float64;
 };
 
 #scope_module;

@@ -13,7 +13,7 @@ using namespace cfd;
 
 int main(int, char**)
 {
-  constexpr Index const N { 10000 };
+  constexpr Index const N { 1000000 };
   constexpr Meters const L { 1.0 };
   constexpr Scalar const T_left { 100.0 };
   //constexpr Scalar const G_right { 0.0 };

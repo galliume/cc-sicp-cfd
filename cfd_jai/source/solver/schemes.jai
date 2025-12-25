@@ -2,11 +2,11 @@
 #import "Math";
 
 scheme_uds :: (
-    F: float,
-    D: float
-) -> [] float
+    F: float64,
+    D: float64
+) -> [] float64
 {
-    results : [3] float;
+    results : [3] float64;
 
     a_W := D + max(F, 0.0);
     a_E := D + max(-F, 0.0);
@@ -20,11 +20,11 @@ scheme_uds :: (
 }
 
 scheme_cds :: (
-    F: float,
-    D: float
-) -> [] float
+    F: float64,
+    D: float64
+) -> [] float64
 {
-    results : [3] float;
+    results : [3] float64;
 
     a_W := D + F / 2.0;
     a_E := D - F / 2.0;

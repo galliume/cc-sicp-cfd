@@ -44,7 +44,7 @@ OUTPUT_EXECUTABLE_NAME := "cfd_jai";
     set_build_options(options, w);
 
     compiler_begin_intercept(w);
-    add_build_file("source/CFD.jai", w);
+    add_build_file("source/benchmark.jai", w);
 
     while true {
         message := compiler_wait_for_message();

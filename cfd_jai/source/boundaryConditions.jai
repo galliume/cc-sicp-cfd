@@ -1,5 +1,5 @@
 DirichletBoundaryCondition :: struct {
-    value : float;
+    value : float64;
 };
 
 #scope_module;

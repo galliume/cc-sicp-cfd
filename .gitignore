@@ -45,3 +45,6 @@ cfd/build
 *.csv
 
 cfd_jai/jai
+cfd_jai/cfd_jai
+*.ods
+*.ods#

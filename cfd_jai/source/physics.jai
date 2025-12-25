@@ -7,21 +7,21 @@ MESH :: #import "mesh";
 SCHEMES :: #import "schemes";
 
 apply_diffusion_operator :: (
-    grids : [] float,
+    grids : [] float64,
     mesh : MESH.Mesh,
     velocity : FIELD.Field,
     props : FIELD.FluidProperties,
-    scheme : (F: float, D: float) -> [] float)
+    scheme : (F: float64, D: float64) -> [] float64)
 {
-    result : [] float;
+    result : [] float64;
     index := 0;
     field_index := 0;
 
     while index < grids.count - 1 {
         //make constants
-        u : float = velocity.values[field_index];
-        F : float = props.rho * u;
-        D : float = props.gamma / mesh.dx;
+        u : float64 = velocity.values[field_index];
+        F : float64 = props.rho * u;
+        D : float64 = props.gamma / mesh.dx;
 
         result = scheme(F, D);
         grids[index] = result[0];
@@ -35,8 +35,8 @@ apply_diffusion_operator :: (
 
 //metaprog for boundary conditions
 apply_boundary_conditions :: (
-    grids : [] float,
-    rhs : [] float,
+    grids : [] float64,
+    rhs : [] float64,
     left_boundary_condition : BOUNDARY_CONDITIONS.DirichletBoundaryCondition,
     right_boundary_condition : BOUNDARY_CONDITIONS.DirichletBoundaryCondition)
 {

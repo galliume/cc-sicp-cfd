@@ -87,7 +87,7 @@ static void BM_TDMASolverUDSScheme(benchmark::State& state) {
   BC::Types bc_right { BC::Dirichlet(T_right) };
 
   Physics::apply_boundary_conditions(A, bc_left, bc_right);
-  
+
   std::visit([&](auto&& bc) {
     b[0] = bc.value;
   }, bc_left);
